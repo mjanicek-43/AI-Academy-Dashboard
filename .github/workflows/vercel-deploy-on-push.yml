@@ -1,5 +1,6 @@
 # On push to main: deploy ai-academy-dashboard to Vercel production via CLI
-# Secrets: VERCEL_TOKEN (Vercel API token from vercel.com/account/tokens)
+# Project has Root Directory = ai-academy-dashboard, so we deploy from repo root.
+# Secret: VERCEL_TOKEN (Vercel API token from vercel.com/account/tokens)
 
 name: Vercel Deploy on Push
 
@@ -10,27 +11,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ai-academy-dashboard
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-          cache-dependency-path: ai-academy-dashboard/package-lock.json
-
-      - name: Install dependencies
-        run: npm ci
 
       - name: Deploy to Vercel
         env:
           VERCEL_ORG_ID: team_79xLIGLnrIoybEiGKxc17Pkq
           VERCEL_PROJECT_ID: prj_kjo9Q2mGffq6ybNjzszpJGDqPqQ5
-        run: |
-          npx vercel deploy --prod --token "${{ secrets.VERCEL_TOKEN }}" --yes
-        working-directory: ai-academy-dashboard
+        run: npx vercel deploy --prod --token "${{ secrets.VERCEL_TOKEN }}" --yes
