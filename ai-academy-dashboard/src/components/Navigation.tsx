@@ -43,6 +43,7 @@ import {
   Radio,
   Eye,
   EyeOff,
+  HelpCircle,
 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { CommandPalette } from '@/components/CommandPalette';
@@ -231,7 +232,7 @@ export function Navigation() {
                     {participant && (
                       <DropdownMenuItem asChild>
                         <Link
-                          href={`/participant/${participant.github_username}`}
+                          href={`/participant/${participant.nickname || participant.github_username || participant.id}`}
                           className="cursor-pointer"
                         >
                           <Settings className="mr-2 h-4 w-4" />
@@ -239,6 +240,18 @@ export function Navigation() {
                         </Link>
                       </DropdownMenuItem>
                     )}
+                    <DropdownMenuItem asChild>
+                      <Link href="/profile" className="cursor-pointer">
+                        <User className="mr-2 h-4 w-4" />
+                        My Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/help" className="cursor-pointer">
+                        <HelpCircle className="mr-2 h-4 w-4" />
+                        Help
+                      </Link>
+                    </DropdownMenuItem>
                     {!participant && !isAdmin && (
                       <DropdownMenuItem asChild>
                         <Link href="/onboarding?from=github" className="cursor-pointer">
@@ -415,7 +428,7 @@ export function Navigation() {
                       </Link>
                       {participant && (
                         <Link
-                          href={`/participant/${participant.github_username}`}
+                          href={`/participant/${participant.nickname || participant.github_username || participant.id}`}
                           onClick={closeMobileMenu}
                           className="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground active:scale-[0.98]"
                         >
@@ -423,6 +436,22 @@ export function Navigation() {
                           Public Profile
                         </Link>
                       )}
+                      <Link
+                        href="/profile"
+                        onClick={closeMobileMenu}
+                        className="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground active:scale-[0.98]"
+                      >
+                        <User className="h-5 w-5" />
+                        My Profile
+                      </Link>
+                      <Link
+                        href="/help"
+                        onClick={closeMobileMenu}
+                        className="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground active:scale-[0.98]"
+                      >
+                        <HelpCircle className="h-5 w-5" />
+                        Help
+                      </Link>
                       {!participant && (
                         <Link
                           href="/onboarding?from=github"
