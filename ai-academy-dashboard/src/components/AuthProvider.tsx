@@ -137,20 +137,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // Get initial session
+    // Get initial session - use getUser() to validate with server
     const initAuth = async () => {
       try {
+        // First get the session (for the session object)
         const { data: { session: initialSession } } = await supabase.auth.getSession();
 
         if (initialSession) {
+          // Validate the session with the server using getUser()
+          const { data: { user: validatedUser }, error } = await supabase.auth.getUser();
+
+          if (error || !validatedUser) {
+            // Session is invalid, clear it
+            console.log('Session invalid, clearing auth state');
+            setSession(null);
+            setUser(null);
+            setParticipant(null);
+            setIsActualAdmin(false);
+            setUserStatus(null);
+            setIsLoading(false);
+            return;
+          }
+
           setSession(initialSession);
-          setUser(initialSession.user);
+          setUser(validatedUser);
 
           // Fetch participant (works for both GitHub and email users)
-          await fetchParticipant(initialSession.user);
+          await fetchParticipant(validatedUser);
 
           // Also check admin_users table for admin status
-          await checkAdminUser(initialSession.user.id);
+          await checkAdminUser(validatedUser.id);
         }
       } catch (error) {
         console.error('Auth initialization error:', error);
