@@ -1,3 +1,13 @@
+
+## Applied Fixes (Day 2)
+- Fixed Broken Access Control in review access:
+  - Updated role checks: require admin OR mentor
+  - Removed participantId-based fallback
+  - Added isMentor to AuthenticatedUser mapping
+  - Commit: <note applied fix for broken access control in SECURITY-AUDIT.md>
+
+
+
 Executive Summary
 The application has a solid foundation based on the SAAS-ARCHITECTURE-RECOMMENDATIONS.md document, with good practices like structured logging and webhook signature verification. However, several critical vulnerabilities were identified that undermine the application's security posture. The most severe issues relate to broken access control, allowing any user to perform administrative actions, and incomplete database security policies that could lead to data breaches.
 
